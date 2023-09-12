@@ -59,19 +59,20 @@ const multi = () =>{
     console.log(resp)
     return new Promise((res,rej)=>{
         setTimeout(()=>{
-            res(resp)
+            rej(resp)
         },0)
     })    
 }
 
 // multi().then(res=>{
 //     console.log(res)
+// }).catch(err =>{
+//     console.log("error",err)
 // })
 
 
 
 //Ejercicio 3 promesas paralelas
-
 
 const paralelas = () =>{
     let arrayPromise = []
@@ -93,9 +94,9 @@ promesas.push(
         console.log("Error" , err)
     })
 
-    return new Promise((resolve, reject) => {
+    return new Promise((res, rej) => {
         setTimeout(()=>{
-            resolve(arrayPromise)
+            res(arrayPromise)
         },200)        
     })
 }
@@ -107,8 +108,6 @@ promesas.push(
 // })
 
 //Ejercicio 4
-
-
 const promesaRetardo = (n) =>{
     let promesas = []
     for(let i = 0; i<n;i++){
@@ -131,15 +130,14 @@ const promesaRetardo = (n) =>{
             },n*1000)
         })
     })
-}
+} 
 
-// promesaRetardo(4).then(res=>{
-//     console.log(res)
-// }).catch(err=>console.log(err))
+// promesaRetardo(4)
 
 //Ejercicio 5
 
 const promesaCancelacion = () =>{
+    let pRes,pRej;
     let tProm;
     let cancelada = false;
    const promesa =  new Promise((res,rej)=>{
@@ -154,7 +152,7 @@ const promesaCancelacion = () =>{
     const cancel = () =>{
         cancelada = true
         clearTimeout(tProm)
-        Promise.reject("Promesa cancelada")
+       return Promise.reject("Promesa cancelada")
     }
 
     promesa.cancel = cancel;
@@ -162,14 +160,16 @@ const promesaCancelacion = () =>{
     return promesa;
 }
 
-// let promCan = promesaCancelacion()
+let promCan = promesaCancelacion()
 
-// promCan.then(res=>{
-//     console.log(res)
-// }).catch(err=>{
-//     console.log("Error",err)
-// })
+promCan.then(res=>{
+    console.log(res)
+}).catch(err=>{
+    console.log("Error",err)
+})
 
-// setTimeout(()=>{
-//     promCan.cancel();
-// },2000)
+setTimeout(()=>{
+    promCan.cancel().catch(err=>{
+        console.log(err)
+    });
+},1000)
