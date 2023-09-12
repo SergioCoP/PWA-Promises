@@ -49,3 +49,16 @@ numAleatorio().then(res=>{
 const urls = ['https://reqres.in/api/users?page=2',
 'https://pokeapi.co/api/v2/pokemon','https://jsonplaceholder.typicode.com/users'
 ]
+
+let resp = [];
+const multi = (urls) =>{
+    urls.forEach(uri => {
+        fetch(uri).then(res => resp.push(res.data))
+    });
+
+    
+
+}
+
+
+console.log()
